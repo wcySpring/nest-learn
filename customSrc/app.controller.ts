@@ -1,4 +1,4 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get } from '@nestjs/common'
 
 // 定义一个控制器类，用于处理请求
 /**
@@ -10,10 +10,10 @@ import { Controller, Get } from "@nestjs/common";
  * 当客户端使用GET方法访问 路径/a/b   ['a','b']
  * 通过@Get装饰器，可以指定该方法处理特定路径上的GET请求
  */
-@Controller("/a")
+@Controller('/a')
 export class AppController {
-  @Get("/b")
-  getHello(): string {
-    return "Hello World!";
-  }
+	@Get('/b')
+	getHello(): string {
+		return 'Hello World!'
+	}
 }

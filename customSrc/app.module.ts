@@ -1,7 +1,7 @@
 // controller 用来处理请求
-import { AppController } from "./app.controller";
+import { AppController } from './app.controller'
 
-import { Module } from "@nestjs/common";
+import { Module } from '@nestjs/common'
 
 // nest 创建一个新的模块。这个模块是一个类，用 @Module 装饰器装饰
 /**
@@ -10,6 +10,6 @@ import { Module } from "@nestjs/common";
  * Nest的模块系统是受Angular启动
  */
 @Module({
-  controllers: [AppController],
+	controllers: [AppController],
 })
 export class AppModule {}
