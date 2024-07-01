@@ -22,13 +22,4 @@ export function Controller(
 	}
 }
 
-export function Get(prefix: string) {
-	return function (
-		target: any,
-		propertyKey: string,
-		descriptor: PropertyDescriptor
-	) {
-		console.log(prefix)
-		return target
-	}
-}
+
