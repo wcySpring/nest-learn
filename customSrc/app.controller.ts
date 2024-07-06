@@ -1,4 +1,6 @@
 import { Controller, Get } from '@nestjs/common'
+import { Req, Res } from '@nestjs/common/param.decorator'
+import { Request, Response } from 'express'
 
 // 定义一个控制器类，用于处理请求
 /**
@@ -13,7 +15,10 @@ import { Controller, Get } from '@nestjs/common'
 @Controller('/a')
 export class AppController {
 	@Get('/b')
-	getHello(): string {
-		return 'Hello World!'
+	getHello(@Req() req: Request, name: string, @Res() res: Response) {
+		console.log(name)
+
+		res.send('22222')
+		// return 'Hello World!'
 	}
 }

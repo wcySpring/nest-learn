@@ -15,11 +15,11 @@ export function Controller(
 	} else if (typeof prefixOrOptions === 'object') {
 		options = prefixOrOptions
 	}
+	console.log(222)
+
 	//这是一个类装饰器，装饰的控制器这个类
 	return (target: Function) => {
 		//给控制器类添加prefix路径前缀的元数据
 		Reflect.defineMetadata('prefix', options.prefix || '', target)
 	}
 }
-
-

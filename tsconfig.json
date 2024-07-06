@@ -4,7 +4,7 @@
 		"baseUrl": "./",
 		"paths": {
 			"@nestjs/*": [
-				"./customSrc/@nestjs/*"
+				"customSrc/@nestjs/*"
 			]
 		},
 		"emitDecoratorMetadata": true,

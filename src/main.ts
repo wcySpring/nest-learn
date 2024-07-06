@@ -3,10 +3,8 @@ import { NestFactory } from '@nestjs/core'
 
 // 导入跟模块
 import { AppModule } from './app.module'
-
 // 定义一个异步函数，用于创建并且启动 Nest 应用
 async function bootstrap() {
-	console.log(21)
 
 	// 使用 NestFactory 创建一个 Nest 应用实例 并传入根模块 AppModule
 	// 在底层，NestFactory.create() 方法使用了一个内部的 HTTP 服务器（Express 或 Fastify）来处理传入的请求
