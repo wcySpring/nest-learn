@@ -41,3 +41,19 @@ export function Post(path: string = ""): MethodDecorator {
     //descriptor.value.method = 'POST'
   };
 }
+
+
+export function Redirect(
+  redirectPath: string,
+  statusCode: 301 | 302
+): MethodDecorator {
+  /**
+   * target 类原型 AppController.prototype
+   * propertyKey方法键名 index
+   * descriptor index方法的属性描述器
+   */
+  return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+    Reflect.defineMetadata("redirectUrl", redirectPath, descriptor.value);
+    Reflect.defineMetadata("redirectStatusCode", statusCode, descriptor.value);
+  };
+}

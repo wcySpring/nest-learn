@@ -10,6 +10,7 @@ import {
   Param,
   Body,
   Post,
+  Next,
 } from "@nestjs/common";
 import { Request, Response } from "express";
 // import { SessionData } from "express-session";
@@ -133,4 +134,17 @@ export class AppController {
     console.log(body);
     console.log(userName);
   }
+  /**
+   * 使用 @Next() 装饰器后也不能跳转 页面需要在保持一直响应中的状态
+   */
+  @Get("next")
+  next(@Next() next) {
+    console.log("next");
+    next();
+  }
+
+  /**@Redirect() 装饰器或特定于库的响应对象（并直接调用 res.redirect()）。
+   * @Redirect() 装饰器有两个可选参数，url 和 statusCode。
+   * 如果省略，则 statusCode 默认为 302。
+   */
 }

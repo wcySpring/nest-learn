@@ -44,3 +44,6 @@ export const Body = createParamDecorator("Body");
 
 // req.params/req.params[key]
 export const Param = createParamDecorator("Param");
+
+// next
+export const Next = createParamDecorator("Next");

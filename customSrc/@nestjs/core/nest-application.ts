@@ -58,6 +58,8 @@ export class NestApplication {
         const httpMethod: string = Reflect.getMetadata("method", method);
         const pathMetadata = Reflect.getMetadata("path", method);
 
+        // 处理重定向的参数
+
         // 如果方法不存在 就跳过下面的处理
         if (!httpMethod) continue;
 
@@ -85,7 +87,7 @@ export class NestApplication {
              *  用装饰器 自动匹配 多种可能的参数比上面的灵活了
              *  在nest 中 当你使用 @Res() 或 @Response() 装饰器时，你需要手动管理响应的发送
              *  但是 上面这种做法 就抛离的nestjs 这种分发可以将 passthrough 选项设置为 true
-             *  这样即使用了  @Res() 或 @Response() 装饰器时 依旧可以用return nextjs 帮助分发
+             *  这样即使用了  @Res() 或 @Response() @Next()装饰器时 依旧可以用return nextjs 帮助分发
              */
             const responseMetadata = this.getResponseMetadata(
               controller,
@@ -105,7 +107,7 @@ export class NestApplication {
   }
 
   /**
-   * 在nest 中 当你使用 @Res() 或 @Response() 装饰器时，你需要手动管理响应的发送
+   * 在nest 中 当你使用 @Res() 或 @Response() @Next()装饰器时，你需要手动管理响应的发送
    */
   private getResponseMetadata(controller, methodName) {
     const paramsMetaData =
@@ -151,6 +153,8 @@ export class NestApplication {
           return data ? req.session?.[data] : req.session;
         case "Param":
           return data ? req.params[data] : req.params;
+        case "Next":
+          return next;
         default:
           return null;
       }
