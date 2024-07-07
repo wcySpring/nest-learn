@@ -27,18 +27,40 @@ import { Request, Response } from "express";
 @Controller("/a")
 export class AppController {
   // get req res 装饰器
+  // 在nest 中 当你使用 @Res() 或 @Response() 装饰器时，你需要手动管理响应的发送
+  // @Get()
+  // getExample() {
+  //   // 没有使用 这两个装饰器 NestJS 会自动处理响应并发送给客户端 这是推荐的
+  //   return { message: 'Hello, world!' };
+  // }
   @Get("/b")
   getHello(@Req() req: Request, name: string, @Res() res: Response) {
     console.log(name);
 
+    // 手动发送
     res.send("22222");
     // return 'Hello World!'
   }
 
-  // query 链接上的 包含 URL 查询参数的对象。例如，在 URL "/a/query?id=2" 中，
-  // 使用的就是express req.query
   /**
-   *
+   *  但是 上面这种做法 就抛离的nestjs 这种分发可以将 passthrough 选项设置为 true
+   * 这样即使用了  @Res() 或 @Response() 装饰器时 依旧可以用return nextjs 帮助分发
+   * 就能与底层框架原生的响应对象（Response）进行交互（例如，根据特定条件设置 Cookie 或 HTTP 头），
+   * 并将剩余的部分留给 Nest 处理。
+   * */
+  @Get()
+  handlerPassthrough(@Res({ passthrough: true }) res: Response) {
+    //但是有些我只是想添个响应头，仅此而矣，我不想负责响应体的发送
+    res.setHeader("key", "value");
+    //response.send('send');
+    //response.json({success:true});
+    //还是想返回一个值让Nest帮我们进行发送响应体操作
+    return `response`;
+  }
+
+  /**
+   * query 链接上的 包含 URL 查询参数的对象。例如，在 URL "/a/query?id=2" 中，
+   * 使用的就是express req.query
    * @param query  本质 req.query
    * @param id  本质 req.query.id
    */

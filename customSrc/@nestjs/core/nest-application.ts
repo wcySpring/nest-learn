@@ -18,8 +18,7 @@ export class NestApplication {
   // 注册 module
   // constructor(protected readonly module) {}
   constructor(module) {
-
-		// body 必须使用 中间件才能使用 因此 在初始化时候就提前注册了比较常用
+    // body 必须使用 中间件才能使用 因此 在初始化时候就提前注册了比较常用
     this.app.use(express.json()); //用来把JSON格式的请求体对象放在req.body上
     this.app.use(express.urlencoded({ extended: true })); //把form表单格式的请求体对象放在req.body
 
@@ -78,16 +77,44 @@ export class NestApplication {
               res,
               next
             );
-            // 这么传参就需要 指定参数位置才能利用call 传入
-            // method.call(controller, req, res, next)
-            // 用装饰器 自动匹配 多种可能的参数比上面的灵活了
             const result = method.call(controller, ...args);
-            if (!result) res.send();
+
+            /**
+             * 这么传参就需要 指定参数位置才能利用call 传入
+             *  method.call(controller, req, res, next)
+             *  用装饰器 自动匹配 多种可能的参数比上面的灵活了
+             *  在nest 中 当你使用 @Res() 或 @Response() 装饰器时，你需要手动管理响应的发送
+             *  但是 上面这种做法 就抛离的nestjs 这种分发可以将 passthrough 选项设置为 true
+             *  这样即使用了  @Res() 或 @Response() 装饰器时 依旧可以用return nextjs 帮助分发
+             */
+            const responseMetadata = this.getResponseMetadata(
+              controller,
+              methodName
+            );
+
+            if (!responseMetadata || responseMetadata?.data?.passthrough) {
+              //把返回值序列化发回给客户端
+              res.send(result);
+            }
+            // 不是就不处理 只能 你在collection 层去调用send
           }
         );
       }
     }
     Logger.log(`Nest application successfully started`, "NestApplication");
+  }
+
+  /**
+   * 在nest 中 当你使用 @Res() 或 @Response() 装饰器时，你需要手动管理响应的发送
+   */
+  private getResponseMetadata(controller, methodName) {
+    const paramsMetaData =
+      Reflect.getMetadata(`params`, controller, methodName) ?? [];
+    return paramsMetaData.filter(Boolean).find((param) => {
+      return (
+        param.key === "Response" || param.key === "Res" || param.key === "Next"
+      );
+    });
   }
 
   // 装饰器参数匹配的分发
