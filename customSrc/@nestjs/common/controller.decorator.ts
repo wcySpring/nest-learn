@@ -13,9 +13,8 @@ export function Controller(
 	if (typeof prefixOrOptions === 'string') {
 		options.prefix = prefixOrOptions
 	} else if (typeof prefixOrOptions === 'object') {
-		options = prefixOrOptions
-	}
-	console.log(222)
+    options = prefixOrOptions;
+  }
 
 	//这是一个类装饰器，装饰的控制器这个类
 	return (target: Function) => {
