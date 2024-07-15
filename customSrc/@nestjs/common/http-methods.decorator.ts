@@ -26,6 +26,11 @@ export function Get(path: string = ""): MethodDecorator {
   };
 }
 
+/**
+ * Post 默认返回值是 201
+ * @param path 
+ * @returns 
+ */
 export function Post(path: string = ""): MethodDecorator {
   /**
    * target 类原型 AppController.prototype
@@ -42,10 +47,15 @@ export function Post(path: string = ""): MethodDecorator {
   };
 }
 
-
+/**
+ * @Redirect() 有两个参数，url 和 statusCode，两者都是可选的。如果省略，statusCode 的默认值为 302 (Found)。
+ * @param redirectPath 重定向地址
+ * @param statusCode 默认302
+ * @returns 
+ */
 export function Redirect(
   redirectPath: string,
-  statusCode: 301 | 302
+  statusCode: 301 | 302 = 302
 ): MethodDecorator {
   /**
    * target 类原型 AppController.prototype
@@ -56,4 +66,29 @@ export function Redirect(
     Reflect.defineMetadata("redirectUrl", redirectPath, descriptor.value);
     Reflect.defineMetadata("redirectStatusCode", statusCode, descriptor.value);
   };
+}
+
+
+
+/**
+ * 响应状态码装饰器
+ * @param statusCode 
+ * @returns 
+ */
+export function HttpCode(statusCode:number = 200):MethodDecorator{
+	return function(target,key,descriptor){
+		Reflect.defineMetadata('statusCode', key, descriptor.value)
+	}
+}
+
+/**
+ *  @Header() 装饰器或库特定的响应对象（并直接调用 res.header()）。
+ */
+export function Header(key:string,value:string):MethodDecorator{
+	return function(target,key,descriptor){
+		// 将数据存到数组中 因为响应头可以设置多个
+		const existingHeaders  = Reflect.getMetadata('headers', descriptor.value) || []
+		existingHeaders .push({key,value})
+		Reflect.defineMetadata('headers',existingHeaders  , descriptor.value)
+	}
 }

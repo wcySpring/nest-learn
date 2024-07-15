@@ -58,7 +58,19 @@ export class NestApplication {
         const httpMethod: string = Reflect.getMetadata("method", method);
         const pathMetadata = Reflect.getMetadata("path", method);
 
-        // 处理重定向的参数
+        // 处理重定向的地址
+        const redirectUrl = Reflect.getMetadata("redirectUrl", method);
+
+        // 处理重定向的code
+        const redirectStatusCode = Reflect.getMetadata(
+          "redirectStatusCode",
+          method
+        );
+
+        // 响应状态码装饰器
+        const statusCode = Reflect.getMetadata("statusCode", method);
+        // 响应头装饰器
+        const headers = Reflect.getMetadata("headers", method) ?? [];
 
         // 如果方法不存在 就跳过下面的处理
         if (!httpMethod) continue;
@@ -79,8 +91,26 @@ export class NestApplication {
               res,
               next
             );
+
             const result = method.call(controller, ...args);
 
+            // 返回值将覆盖传递给 @Redirect() 装饰器的任何参数
+            if (result?.url) {
+              return res.redirect(result.statusCode || 302, result.url);
+            }
+
+            //判断如果需要重定向，则直接重定向到指定的redirectUrl
+            if (redirectUrl) {
+              return res.redirect(redirectStatusCode || 302, redirectUrl);
+            }
+
+            // 如果有设置响应code
+            if (statusCode) {
+              res.statusCode = statusCode;
+            } else if (method === "POST") {
+              // 如果是post 请求 默认201
+              res.statusCode = 201;
+            }
             /**
              * 这么传参就需要 指定参数位置才能利用call 传入
              *  method.call(controller, req, res, next)
@@ -93,12 +123,16 @@ export class NestApplication {
               controller,
               methodName
             );
-
+            //判断controller的methodName方法里有没有使用Response或Res参数装饰器，如果用了任何一个则不发响应
+            //或者没有注入Response参数装饰器，或者注入了但是传递了passthrough参数，都会由Nest.js来返回响应
             if (!responseMetadata || responseMetadata?.data?.passthrough) {
+              headers.forEach(({ name, value }) => {
+                res.setHeader(name, value);
+              });
+              // 不是就不处理 只能 你在collection 层去调用send
               //把返回值序列化发回给客户端
               res.send(result);
             }
-            // 不是就不处理 只能 你在collection 层去调用send
           }
         );
       }
@@ -155,6 +189,7 @@ export class NestApplication {
           return data ? req.params[data] : req.params;
         case "Next":
           return next;
+
         default:
           return null;
       }

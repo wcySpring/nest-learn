@@ -11,6 +11,9 @@ import {
   Body,
   Post,
   Next,
+  Redirect,
+  HttpCode,
+  Header,
 } from "@nestjs/common";
 import { Request, Response } from "express";
 // import { SessionData } from "express-session";
@@ -55,7 +58,7 @@ export class AppController {
     res.setHeader("key", "value");
     //response.send('send');
     //response.json({success:true});
-    //还是想返回一个值让Nest帮我们进行发送响应体操作
+    //还是想返回一个值让Nest帮我们进行发送响应体操作 passthrough
     return `response`;
   }
 
@@ -125,6 +128,7 @@ export class AppController {
   }
 
   /**
+   * 默认响应201
    * 必须要现有中间件 在nest-application初始化的时候创建了
    * @param body  req.body
    * @param userName  req.body[key]
@@ -134,6 +138,24 @@ export class AppController {
     console.log(body);
     console.log(userName);
   }
+
+  /**
+   * post 默认201 这里设置 响应头 和 返回的code 码
+   * @param createUserDto
+   * @param username
+   * @returns
+   */
+  @Post("create")
+  @HttpCode(200)
+  @Header("Cache-Control", "none") //向客户端发送一个响应头
+  @Header("key1", "value1")
+  @Header("key2", "value2")
+  createUser(@Body() createUserDto, @Body("username") username: string) {
+    console.log("createUserDto", createUserDto);
+    console.log("username", username);
+    return `user created`;
+  }
+
   /**
    * 使用 @Next() 装饰器后也不能跳转 页面需要在保持一直响应中的状态
    */
@@ -147,4 +169,12 @@ export class AppController {
    * @Redirect() 装饰器有两个可选参数，url 和 statusCode。
    * 如果省略，则 statusCode 默认为 302。
    */
+  @Get("docs")
+  @Redirect("https://nest.nodejs.cn", 302)
+  getDocs(@Query("version") version) {
+    if (version && version === "5") {
+      //  返回值将覆盖传递给 @Redirect() 装饰器的任何参数
+      return { url: "https://nest.nodejs.cn/v5/", statusCode: 301 };
+    }
+  }
 }
