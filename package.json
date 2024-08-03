@@ -2,10 +2,9 @@
 	"name": "manual-installation",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
 	"scripts": {
-		"dev": "ts-node -r tsconfig-paths/register ./src/main.ts",
-		"custom": "nodemon"
+		"c": "pnpm --stream -r test",
+		"zz": "pnpm -F nestDemo test"
 	},
 	"keywords": [],
 	"author": "",

@@ -8,6 +8,7 @@ import path from 'path'
 
 import 'reflect-metadata'
 import { Logger } from './logger'
+import { DESIGN_PARAMTYPES, INJECTED_TOKENS } from '@nestjs/common'
 
 //    const app = new NestApplication(module);
 export class NestApplication {
@@ -17,6 +18,9 @@ export class NestApplication {
 	protected readonly module
 	// 注册 module
 	// constructor(protected readonly module) {}
+
+	//在此处保存全部的providers
+	private readonly providers = new Map()
 	constructor(module) {
 		// body 必须使用 中间件才能使用 因此 在初始化时候就提前注册了比较常用
 		this.app.use(express.json()) //用来把JSON格式的请求体对象放在req.body上
@@ -29,6 +33,7 @@ export class NestApplication {
 	use(middleware) {
 		this.app.use(middleware)
 	}
+
 	/**
 	 * 根据 reflect-metadata 元数据 收集相应依赖重新
 	 * 拼装成express 展示格式
@@ -41,6 +46,8 @@ export class NestApplication {
 		Logger.log(`AppModule dependencies initialized`, 'InstanceLoader')
 		// 循环收集 Module 中的 controllers 层 进行express 拼装
 		for (const Controller of controllers) {
+			// 获取需要被注入的实例化参数 解析出控制器的依赖
+			const dependencies = this.resolveDependencies(Controller)
 			//创建每个控制器的实例
 			const controller = new Controller()
 			// 在从每个控制器上获取绑定的 路径前缀 获取控制器的路径前缀
@@ -138,6 +145,14 @@ export class NestApplication {
 			}
 		}
 		Logger.log(`Nest application successfully started`, 'NestApplication')
+	}
+
+	//解析出控制器的依赖
+	resolveDependencies(Cls: Function) {
+		// 先获取绑定key 的注入
+		const injectedTokens = Reflect.getMetadata(INJECTED_TOKENS, Cls) ?? []
+		// 获取构造函数中所有的 参数类型
+		const constructorParams = Reflect.getMetadata(DESIGN_PARAMTYPES, Cls)
 	}
 
 	/**

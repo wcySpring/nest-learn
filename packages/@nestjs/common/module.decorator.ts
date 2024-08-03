@@ -8,6 +8,7 @@ import 'reflect-metadata'
 
 interface ModuleMetadata {
 	controllers: Function[]
+	providers?: Function[]
 }
 
 // 定义模块的装饰器
@@ -16,5 +17,8 @@ export function Module(metadata: ModuleMetadata): ClassDecorator {
 	return (target) => {
 		// 给绑定装饰器的类添加元数据 用来将类和 当前数据关联起来
 		Reflect.defineMetadata('controllers', metadata.controllers, target)
+
+		// 收集需要绑定的依赖,先收集 providers 提供的值
+		Reflect.defineMetadata('providers', metadata.providers, target)
 	}
 }

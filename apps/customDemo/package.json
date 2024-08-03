@@ -1,0 +1,16 @@
+{
+	"name": "customDemo1",
+	"version": "1.0.0",
+	"description": "",
+	"main": "main.ts",
+	"scripts": {
+		"dev": "ts-node -r tsconfig-paths/register ./src/main.ts",
+		"cc": "node -v"
+	},
+	"keywords": [],
+	"author": "",
+	"dependencies": {
+		"@my-nestjs/common": "workspace:^",
+		"@my-nestjs/core": "workspace:^"
+	}
+}
