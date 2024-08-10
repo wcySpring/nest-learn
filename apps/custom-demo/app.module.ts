@@ -1,9 +1,9 @@
 // controller 用来处理请求
-import { AppController } from './app.controller'
+import { AppController } from "./app.controller";
 
-import { Module } from '@nestjs/common'
-import { LoggerService } from './inject/LoggerService'
-import { ProviderController } from './provide/provider.controller'
+import { Module } from "@nestjs/common";
+import { LoggerService } from "./src/inject/LoggerService";
+import { ProviderController } from "./src/provide/provider.controller";
 // nest 创建一个新的模块。这个模块是一个类，用 @Module 装饰器装饰
 /**
  * @Module是一个装饰器，用于定义模块
@@ -18,7 +18,7 @@ import { ProviderController } from './provide/provider.controller'
  * 在Module里注册Provider类，在控制里面声明或者说使用Provder类
  */
 @Module({
-	controllers: [AppController, ProviderController],
-	providers: [LoggerService], // LoggerService 注入到 ProviderController 让ProviderController可以依赖反转控制
+  controllers: [AppController, ProviderController],
+  providers: [LoggerService], // LoggerService 注入到 ProviderController 让ProviderController可以依赖反转控制
 })
 export class AppModule {}

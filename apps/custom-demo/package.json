@@ -1,0 +1,21 @@
+{
+  "name": "@nest-learn/custom-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.ts",
+  "scripts": {
+    "dev": "ts-node -r tsconfig-paths/register ./main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "@my-nestjs/common": "workspace:^",
+    "@my-nestjs/core": "workspace:^",
+    "@nest-learn/tsconfig": "workspace:^",
+    "express-session": "^1.18.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.0"
+  }
+}

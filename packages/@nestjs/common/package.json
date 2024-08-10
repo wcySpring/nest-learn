@@ -1,6 +1,9 @@
 {
-	"name": "@my-nestjs/common",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.ts"
+  "name": "@my-nestjs/common",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "ts-node -r tsconfig-paths/register ./main.ts"
+  }
 }

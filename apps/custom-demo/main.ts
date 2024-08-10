@@ -1,5 +1,5 @@
-import { NestFactory } from './@nestjs/core'
-import { AppModule } from './app.module'
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
 import session from "express-session";
 // 定义一个异步函数，用于创建并且启动 Nest 应用
 async function bootstrap() {
@@ -27,4 +27,4 @@ async function bootstrap() {
   await app.listen(3000);
 }
 
-bootstrap()
+bootstrap();

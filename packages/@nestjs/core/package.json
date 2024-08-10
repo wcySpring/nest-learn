@@ -1,6 +1,12 @@
 {
-	"name": "@my-nestjs/core",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.ts"
+  "name": "@my-nestjs/core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "cli-color": "^2.0.4"
+  }
 }
