@@ -1,0 +1,3 @@
+{
+  "extends": "@nest-learn/tsconfig/tsconfig.base.json"
+}

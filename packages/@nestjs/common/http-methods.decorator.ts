@@ -7,23 +7,27 @@ export function Get(path: string = ''): MethodDecorator {
 	 * descriptor index方法的属性描述器
 	 */
 	return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
-		console.log(descriptor.value, 22)
+    console.log(descriptor.value, 22);
 
-		/**
-		 * Reflect.defineMetadata("path", path, target, propertyKey);
-		 * const a = new A
-		 * 取写法 console.log(Reflect.getMetadata("path", a, "getName"));
-		 * 但是这里 target 用的function 所以即使在不同类中重名，但是他们指向不同
-		 * 相当于下面的写法比上面的更简单上面用 property+方法名做映射 等于 内存指向这种更简洁
-		 * */
-		//给descriptor.value，也就是index函数添加元数据，path=path Get 收集的地址
-		Reflect.defineMetadata('path', path, descriptor.value)
-		//descriptor.value.path = path;
-		//给descriptor.value，也就是index函数添加元数据，method=GET
-		//descriptor.value.method = 'GET'
+    /**
+     * Reflect.defineMetadata("path", path, target, propertyKey);
+     * const a = new A
+     * 取写法 console.log(Reflect.getMetadata("path", a, "getName"));
+     * 但是这里 target 用的function 所以即使在不同类中重名，但是他们指向不同
+     * 相当于下面的写法比上面的更简单上面用 property+方法名做映射 等于 内存指向这种更简洁
+     *
+     * descriptor.value 的作用：descriptor.value 是指向该方法实现的引用。即使方法名相同，不同类中的方法会拥有不同的 descriptor.value，因为它们的实现是不同的函数对象。
+     * 例如，如果类 A 和类 B 都有一个方法 index，即使它们的方法名相同，但 A.prototype.index 和 B.prototype.index 是两个不同的函数对象，因此 descriptor.value 也会不同。
+     * 因为每个类中的方法即使名字相同，但它们在内存中的指向不同，这就保证了即使在不同的类中有相同的方法名，它们的元数据也不会冲突。这是因为元数据是存储在具体的函数对象上的，而不是单纯地依赖方法名
+     * */
+    //给descriptor.value，也就是index函数添加元数据，path=path Get 收集的地址
+    Reflect.defineMetadata("path", path, descriptor.value);
+    //descriptor.value.path = path;
+    //给descriptor.value，也就是index函数添加元数据，method=GET
+    //descriptor.value.method = 'GET'
 
-		Reflect.defineMetadata('method', 'GET', descriptor.value)
-	}
+    Reflect.defineMetadata("method", "GET", descriptor.value);
+  }
 }
 
 /**

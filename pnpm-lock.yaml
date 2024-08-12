@@ -70,7 +70,11 @@ importers:
 
   internal/tsconfig: {}
 
-  packages/@nestjs/common: {}
+  packages/@nestjs/common:
+    dependencies:
+      '@nest-learn/tsconfig':
+        specifier: workspace:^
+        version: link:../../../internal/tsconfig
 
   packages/@nestjs/core:
     dependencies:
