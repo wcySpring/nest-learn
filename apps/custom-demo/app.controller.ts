@@ -105,6 +105,7 @@ export class AppController {
   handlerParam(@Param() param, @Param("id") id) {
     console.log(param);
     console.log(id);
+		return 12;
   }
 
   // 注册session 中间件 在express 中才能使用 /a/login?userId=1

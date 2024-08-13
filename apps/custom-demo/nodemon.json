@@ -1,6 +1,6 @@
 {
-	"watch": ["apps/customDemo"],
-	"ext": "ts,js,json",
-	"ignore": ["node_modules"],
-	"exec": "ts-node -r tsconfig-paths/register apps/customDemo/main.ts"
+  "watch": ["apps/custom-demo"],
+  "ext": "ts,js,json",
+  "ignore": ["node_modules"],
+  "exec": "ts-node -r tsconfig-paths/register apps/custom-demo/main.ts"
 }

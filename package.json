@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "c": "pnpm --stream -r test",
-    "zz": "pnpm -F nestDemo test"
+    "c:dev": "pnpm -F @nest-learn/custom-demo dev"
   },
   "keywords": [],
   "author": "",
