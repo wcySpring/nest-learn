@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.ts",
   "scripts": {
-    "dev": "ts-node -r tsconfig-paths/register ./main.ts"
+    "dev": "ts-node -r tsconfig-paths/register ./main.ts",
+    "w:dev": "nodemon main.ts"
   },
   "keywords": [],
   "author": "",

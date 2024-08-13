@@ -1,0 +1,18 @@
+{
+  "extends": "@nest-learn/tsconfig/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+
+    "paths": {
+      // "@nestjs/*": ["./node_modules/@my-nestjs/*"] // ["./node_modules/@nestjs/*"]
+    }
+  },
+
+  "include": [
+    "./src/**/*.ts",
+    "app.controller.ts",
+    "app.decorator.ts",
+    "app.module.ts",
+    "main.ts"
+  ]
+}
