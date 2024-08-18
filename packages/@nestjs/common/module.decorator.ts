@@ -7,8 +7,8 @@ import 'reflect-metadata'
  */
 
 interface ModuleMetadata {
-	controllers: Function[]
-	providers?: Function[]
+  controllers: Function[];
+  providers?: any[];
 }
 
 // 定义模块的装饰器

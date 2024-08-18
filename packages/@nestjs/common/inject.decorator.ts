@@ -13,7 +13,7 @@ import { INJECTED_TOKENS } from './constants'
  *
  * @param token  映射要注入的类关系
  *
- * @deprecated 获取了 需要注入容器中 被Inject 标记的 key
+ *  获取了 需要注入容器中 被Inject 标记的 key
  */
 export function Inject(token: string): ParameterDecorator {
 	//target类本身 propertyKey方法的名称 parameterIndex参数的索引

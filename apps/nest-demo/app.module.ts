@@ -4,6 +4,9 @@ import { AppController } from "./app.controller";
 
 import { Module } from "@nestjs/common";
 import { UserModule } from "src/injectable/user.module";
+import { UserController1 } from "src/injectable/user.controller1";
+import { UserModule1 } from "src/injectable/user.module1";
+import { UserController2 } from "src/injectable/user.controller2";
 
 // nest 创建一个新的模块。这个模块是一个类，用 @Module 装饰器装饰
 /**
@@ -12,7 +15,21 @@ import { UserModule } from "src/injectable/user.module";
  * Nest的模块系统是受Angular启动
  */
 @Module({
-  controllers: [AppController, UserController],
-  providers: [UserModule],
+  controllers: [
+    AppController,
+    UserController,
+    UserController1,
+    UserController2,
+  ],
+  providers: [
+    UserModule,
+    { provide: "UserModule1", useClass: UserModule },
+    {
+      provide: "UserModule2",
+      useFactory: () => {
+        return new UserModule1("w", 22);
+      },
+    },
+  ],
 })
 export class AppModule {}
