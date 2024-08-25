@@ -7,8 +7,6 @@ export function Get(path: string = ''): MethodDecorator {
 	 * descriptor index方法的属性描述器
 	 */
 	return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
-    console.log(descriptor.value, 22);
-
     /**
      * Reflect.defineMetadata("path", path, target, propertyKey);
      * const a = new A
@@ -21,12 +19,12 @@ export function Get(path: string = ''): MethodDecorator {
      * 因为每个类中的方法即使名字相同，但它们在内存中的指向不同，这就保证了即使在不同的类中有相同的方法名，它们的元数据也不会冲突。这是因为元数据是存储在具体的函数对象上的，而不是单纯地依赖方法名
      * */
     //给descriptor.value，也就是index函数添加元数据，path=path Get 收集的地址
-    Reflect.defineMetadata("path", path, descriptor.value);
+    Reflect.defineMetadata("path", path, descriptor.value)
     //descriptor.value.path = path;
     //给descriptor.value，也就是index函数添加元数据，method=GET
     //descriptor.value.method = 'GET'
 
-    Reflect.defineMetadata("method", "GET", descriptor.value);
+    Reflect.defineMetadata("method", "GET", descriptor.value)
   }
 }
 

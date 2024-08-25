@@ -20,10 +20,12 @@ export class ProviderController {
   ) {}
   @Get()
   index() {
-    this.loggerClassService.log("index");
-    this.loggerService.log("index");
-    this.useValueService.log("index");
-    this.useFactory.log("index");
-    return "index";
+    console.log(this.loggerClassService)
+
+    this.loggerClassService.log("index")
+    this.loggerService.log("index")
+    this.useValueService.log("index")
+    this.useFactory.log("index")
+    return "index"
   }
 }

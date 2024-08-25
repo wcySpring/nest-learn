@@ -7,7 +7,9 @@ import { UserModule } from "src/injectable/user.module";
 import { UserController1 } from "src/injectable/user.controller1";
 import { UserModule1 } from "src/injectable/user.module1";
 import { UserController2 } from "src/injectable/user.controller2";
-
+import { CatsModule } from "./src/core/cats/cats.module"
+import { AppService } from "./app.service"
+import { CatsController } from "src/injectable/catcontroller"
 // nest 创建一个新的模块。这个模块是一个类，用 @Module 装饰器装饰
 /**
  * @Module是一个装饰器，用于定义模块
@@ -20,6 +22,7 @@ import { UserController2 } from "src/injectable/user.controller2";
     UserController,
     UserController1,
     UserController2,
+    CatsController,
   ],
   providers: [
     UserModule,
@@ -27,9 +30,11 @@ import { UserController2 } from "src/injectable/user.controller2";
     {
       provide: "UserModule2",
       useFactory: () => {
-        return new UserModule1("w", 22);
+        return new UserModule1("w", 22)
       },
     },
+    AppService,
   ],
+  imports: [CatsModule],
 })
 export class AppModule {}
