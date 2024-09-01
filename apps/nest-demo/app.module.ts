@@ -1,5 +1,7 @@
 import { Module } from "@nestjs/common"
 import { UserModule } from "./src/user/user.module"
+import { CatsModule } from "src/cat/cats.module"
+import { AppService } from "app.service"
 // nest 创建一个新的模块。这个模块是一个类，用 @Module 装饰器装饰
 /**
  * @Module是一个装饰器，用于定义模块
@@ -7,6 +9,7 @@ import { UserModule } from "./src/user/user.module"
  * Nest的模块系统是受Angular启动
  */
 @Module({
-  imports: [UserModule],
+  providers: [AppService],
+  imports: [UserModule, CatsModule],
 })
 export class AppModule {}
