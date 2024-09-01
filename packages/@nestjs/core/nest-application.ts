@@ -88,9 +88,9 @@ export class NestApplication {
   private registerProvidersFromModule(module, ...parentModules) {
     // 获取当前模块的所有provides 注入
     const providers = Reflect.getMetadata("providers", module) || []
-    // 获取当前模块的所有 exports注入
+    // 获取当前模块的所有 exports注入s
     const exports = Reflect.getMetadata("exports", module) || []
-    const global = Reflect.getMetadata("global", module)
+    const global = Reflect.getMetadata("global", module) || []
     // 循环所有的exports 看是否在imports 在的话就是可以导出使用
     for (const exportToken of exports) {
       // 因为exports 有可能导出的是模块 因此判断是否是模块
@@ -163,7 +163,7 @@ export class NestApplication {
     if (provider.provide && provider.useClass) {
       //获取这个类的定义LoggerService
       const Clazz = provider.useClass
-      //获取此类的参数['suffix']
+      //获取此类的参数['suffix'] 找到 provides 的构造函数中的参数找到他们要依赖注入的对象
       const dependencies = this.resolveDependencies(Clazz)
       //创建提供者类的实例
       const value = new Clazz(...dependencies)

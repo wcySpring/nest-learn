@@ -76,6 +76,9 @@ importers:
       '@nestjs/schematics':
         specifier: ^10.1.4
         version: 10.1.4(chokidar@3.6.0)(typescript@5.3.3)
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
 
   internal/tsconfig: {}
 
