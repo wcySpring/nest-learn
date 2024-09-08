@@ -8,7 +8,7 @@ import path from 'path'
 
 import 'reflect-metadata'
 import { Logger } from './logger'
-import { DESIGN_PARAMTYPES, INJECTED_TOKENS } from "../common";
+import { defineModule, DESIGN_PARAMTYPES, INJECTED_TOKENS } from "../common"
 
 //    const app = new NestApplication(module);
 export class NestApplication {
@@ -38,7 +38,7 @@ export class NestApplication {
     this.module = module
 
     // 注入 providers
-    this.initProviders()
+    // this.initProviders()
   }
 
   // 注册中间件
@@ -122,15 +122,43 @@ export class NestApplication {
 
   // 通过imports 去收集所有的 providers
   //初始化提供化
-  initProviders() {
+  async initProviders() {
     //重写注册provider的流程
     //获取模块导入的元数据
     const imports = Reflect.getMetadata("imports", this.module) ?? []
     //遍历所有的导入的模块
 
     for (const importModule of imports) {
-      //LoggerModule
-      this.registerProvidersFromModule(importModule, this.module)
+      let importedModule = importModule
+      //如果导入的是一个Promise，说是它是异步的动态模块
+      if (importModule instanceof Promise) {
+        importedModule = await importedModule
+      }
+      // 动态模块会有一个module 属性因此根module 来判断是否是动态模块
+      if ("module" in importedModule) {
+        //获取动态模块返回的老的模块定义，新的providers数组，新的导出的token数组
+        const { module, providers, controllers, exports } = importedModule
+        //把老的和新的providers和exports进行合并
+        // 这里的老的就是 静态修饰动态，我们需要获取原来的静态把现在的动态注入回去
+        const oldControllers = Reflect.getMetadata("controllers", module)
+        const newControllers = [
+          ...(oldControllers ?? []),
+          ...(controllers ?? []),
+        ]
+        defineModule(module, newControllers)
+        const oldProviders = Reflect.getMetadata("providers", module)
+        const newProviders = [...(oldProviders ?? []), ...(providers ?? [])]
+        defineModule(module, newProviders)
+        const oldExports = Reflect.getMetadata("exports", module)
+        const newExports = [...(oldExports ?? []), ...(exports ?? [])]
+        Reflect.defineMetadata("controllers", newControllers, module)
+        Reflect.defineMetadata("providers", newProviders, module)
+        Reflect.defineMetadata("exports", newExports, module)
+        this.registerProvidersFromModule(module, this.module)
+      } else {
+        //LoggerModule
+        this.registerProvidersFromModule(importModule, this.module)
+      }
     }
     //获取当前模块提供者的元数据
     const providers = Reflect.getMetadata("providers", this.module) ?? []
@@ -420,6 +448,8 @@ export class NestApplication {
 
   // 启动Http 服务
   async listen(port: Number) {
+    await this.initProviders() //注入providers
+
     await this.init()
 
     this.app.listen(port, () => {

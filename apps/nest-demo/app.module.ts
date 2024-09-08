@@ -2,6 +2,8 @@ import { Module } from "@nestjs/common"
 import { UserModule } from "./src/user/user.module"
 import { CatsModule } from "src/cat/cats.module"
 import { AppService } from "app.service"
+import { DynamicConfigModule } from "./src/dynamic/dynamic.module"
+import { AppController } from "app.controller"
 // nest 创建一个新的模块。这个模块是一个类，用 @Module 装饰器装饰
 /**
  * @Module是一个装饰器，用于定义模块
@@ -10,6 +12,13 @@ import { AppService } from "app.service"
  */
 @Module({
   providers: [AppService],
-  imports: [UserModule, CatsModule],
+  imports: [
+    UserModule,
+    CatsModule,
+    DynamicConfigModule.register({
+      folder: "",
+    }),
+  ],
+  controllers: [AppController],
 })
 export class AppModule {}

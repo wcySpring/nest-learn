@@ -10,6 +10,8 @@ import {
 } from "./src/inject/LoggerService";
 import { ProviderController } from "./src/provide/provider.controller";
 import { LoggerModule } from "src/modules/LoggerModule"
+import { DynamicConfigModule } from "src/dynamic/dynamic.module"
+import { DynamicController } from "src/dynamic/dynamic.controller"
 // nest 创建一个新的模块。这个模块是一个类，用 @Module 装饰器装饰
 /**
  * @Module是一个装饰器，用于定义模块
@@ -24,7 +26,7 @@ import { LoggerModule } from "src/modules/LoggerModule"
  * 在Module里注册Provider类，在控制里面声明或者说使用Provder类
  */
 @Module({
-  controllers: [AppController, ProviderController],
+  controllers: [AppController, ProviderController, DynamicController],
   // providers: [
   //   {
   //     provide: "SUFFIX", //后缀
@@ -46,6 +48,6 @@ import { LoggerModule } from "src/modules/LoggerModule"
   //     useFactory: (prefix1, suffix) => new UseFactory(prefix1, suffix),
   //   },
   // ], // LoggerService 注入到 ProviderController 让ProviderController可以依赖反转控制
-  imports: [LoggerModule],
+  imports: [LoggerModule, DynamicConfigModule.register({ folder: "" })],
 })
 export class AppModule {}

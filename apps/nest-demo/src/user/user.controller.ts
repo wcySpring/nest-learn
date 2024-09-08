@@ -145,8 +145,3 @@ export class UserController {
     }
   }
 }
-function injectable(
-  arg0: string
-): (target: UserController, propertyKey: "userService") => void {
-  throw new Error("Function not implemented.")
-}

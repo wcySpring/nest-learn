@@ -1,4 +1,5 @@
 import { Controller, Get } from "@nestjs/common";
+import { DynamicService } from "src/dynamic/dynamic.service"
 
 // 定义一个控制器类，用于处理请求
 /**
@@ -12,8 +13,17 @@ import { Controller, Get } from "@nestjs/common";
  */
 @Controller("/a")
 export class AppController {
+  constructor(public dynamicService: DynamicService) {}
+
+  // getHello方法处理/a/b路径上的GET请求
   @Get("/b")
   getHello() {
-    return { msg: "aa" };
+    return { msg: "aa" }
+  }
+
+  // 获取动态注入的配置文件
+  @Get("/config")
+  getConfig() {
+    return this.dynamicService.get("HELLO_MESSAGE")
   }
 }

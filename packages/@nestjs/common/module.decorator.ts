@@ -61,3 +61,8 @@ export function Global(): ClassDecorator {
     Reflect.defineMetadata("global", true, target)
   }
 }
+
+// 动态模块的类型约束导出
+export interface DynamicModule extends ModuleMetadata {
+	  module: Function;
+}
