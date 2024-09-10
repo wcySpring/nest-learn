@@ -4,6 +4,7 @@ import { CatsModule } from "src/cat/cats.module"
 import { AppService } from "app.service"
 import { DynamicConfigModule } from "./src/dynamic/dynamic.module"
 import { AppController } from "app.controller"
+import { LoggerModule } from './src/logger/logger.module';
 // nest 创建一个新的模块。这个模块是一个类，用 @Module 装饰器装饰
 /**
  * @Module是一个装饰器，用于定义模块
@@ -18,6 +19,7 @@ import { AppController } from "app.controller"
     DynamicConfigModule.register({
       folder: "",
     }),
+    LoggerModule,
   ],
   controllers: [AppController],
 })

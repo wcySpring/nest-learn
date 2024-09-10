@@ -26,6 +26,7 @@ export class UserController {
   // public userService: UserService
 
   // useValue
+
   @Inject("USER_SERVICE")
   public USER_SERVICE: { getUser: () => string }
 
